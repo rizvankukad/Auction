@@ -5,35 +5,53 @@ import routing from './main.routes';
 export class MainController {
   $http;
   socket;
-  awesomeThings = [];
-  newThing = '';
+  commonService;
+  state;
+  Users = [];
+  newUser = '';
 
   /*@ngInject*/
-  constructor($http, $scope, socket) {
+  constructor($http, $scope, socket, $state, common) {
+    this.commonService = common;
     this.$http = $http;
     this.socket = socket;
+    this.state = $state;
 
     $scope.$on('$destroy', function() {
-      socket.unsyncUpdates('thing');
+      socket.unsyncUpdates('user');
     });
   }
 
   $onInit() {
-    this.$http.get('/api/things').then(response => {
-      this.awesomeThings = response.data;
-      this.socket.syncUpdates('thing', this.awesomeThings);
+    this.$http.get('/api/users').then(response => {
+      this.Users = response.data;
+      this.socket.syncUpdates('user', this.Users);
     });
   }
 
-  addThing() {
-    if (this.newThing) {
-      this.$http.post('/api/things', { name: this.newThing });
-      this.newThing = '';
+  addUser() {
+    let index = -1;
+    for (let i = 0, len = this.Users.length; i < len; i++) {
+      if (this.Users[i].name === this.newUser) {
+        index = i;
+        break;
+      }
     }
+    if (index > -1) {
+      this.$http.get('/api/users/' + this.newUser).then(response => {
+        this.state.go("dashboard", { user: response.data[0].name });
+      });
+    } else {
+      this.$http.post('/api/users', { name: this.newUser, active: true }).then(response => {
+        this.commonService.setInfo('coins', response.data.coins);
+        this.state.go("dashboard", { user: response.data.name });
+      });
+    }
+    this.newUser = '';
   }
 
-  deleteThing(thing) {
-    this.$http.delete('/api/things/' + thing._id);
+  deleteUser(user) {
+    this.$http.delete('/api/users/' + user._id);
   }
 }
 

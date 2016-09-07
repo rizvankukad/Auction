@@ -10,6 +10,8 @@ This project was generated with the [Angular Full-Stack Generator](https://githu
 - [Node.js and npm](nodejs.org) Node >= 4.x.x, npm >= 2.x.x
 - [Gulp](http://gulpjs.com/) (`npm install --global gulp`)
 - [SQLite](https://www.sqlite.org/quickstart.html)
+- [Python]
+- [Ruby]
 
 ### Developing
 

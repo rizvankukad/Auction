@@ -1,0 +1,92 @@
+<div class="container">
+<div uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" dismiss-on-timeout="3000" close="closeAlert($index)">{{alert.msg}}</div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Player State</h3>
+                </div>
+                <div class="panel-body" ng-repeat="user in users | filter:currentUsersItem">
+                    Name : {{ user.name }}
+                    Coins : {{ user.coins }}
+                    <a ui-sref="main">Logout</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Inventory</h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="list-group">
+						<li class="list-group-item" ng-repeat="item in items | filter:currentUsersItem">
+							<div class="thumb">
+								<img ng-src="assets/images/{{item.item}}.png" height="32" width="32" alt="{{item.item}}" title="{{item.item}}" />
+								<span>{{ item.item }}</span>
+							</div>
+							<div class="quantity">
+								<span>Quantity</span>
+								<span>{{ item.quantity }}</span>
+							</div>
+							<div class="auction">
+								<button class="btn btn-primary" ng-click="open('sm', item)">Auction</button>
+							</div>
+						</li>
+					</ul>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Current Auction</h3>
+                </div>
+                <div class="panel-body">
+                    <div ng-if="auctions.length <= 0">
+                    	No Auctions at the moment
+                    </div>
+                    <div ng-if="auctions.length > 0" ng-repeat="auction in auctions">
+	                    <div ng-if="auction.active">
+	                    	Seller : {{auction.seller}}<br/>
+	                    	<img ng-src="assets/images/{{auction.item}}.png" height="32" width="32" alt="{{auction.item}}" title="{{auction.item}}" />
+							<span>{{ auction.item }}</span>
+							Quantity : {{auction.qty}}<br/>
+							<span ng-if="!auction.winner">Minimum bid : {{ auction.minbid }}<br/></span>
+							<span ng-if="auction.winner">Winning bid : {{ auction.winbid }}<br/></span>
+							Time Left : {{ timeleft | number:0}}<br/>
+							{{auction.winner}}
+							<input type="number" name="bid" ng-model="yourbid"/>
+							<button class="btn btn-primary" ng-click="placeBid(yourbid)">Place Bid</button>
+						</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/ng-template" id="myModalContent.html">
+    <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">Start Auction</h3>
+    </div>
+    <div class="modal-body" id="modal-body">
+		<form name="bidform">
+		    <div class="form-group">
+		        <label for="quantity">Quantity</label>
+		        <input type="number" class="form-control" name="quantity" id="quantity" ng-model="quantity" placeholder="Quantity">
+		    </div>
+		    <div class="form-group">
+		        <label for="minbid">Minimum Bid</label>
+		        <input type="number" class="form-control" name="minbid" id="minbid" ng-model="minbid" placeholder="Minimum Bid">
+		    </div>
+		</form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-disabled="!bidform.quantity.$valid" ng-click="$close([quantity, minbid])">Start Auction</button>
+        <button class="btn btn-warning" type="button" ng-click="$dismiss()">Cancel</button>
+    </div>
+</script>
+<script type="text/ng-template" id="alert.html">
+    <div ng-transclude></div>
+</script>

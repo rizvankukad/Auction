@@ -31,12 +31,15 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-4">
+        <div ng-repeat="user in $ctrl.Users">
+        {{user.name}}
+      </div>
             <form class="thing-form">
                 <label>User Login</label>
                 <p class="input-group">
-                    <input type="text" class="form-control" placeholder="User name" ng-model="$ctrl.newThing">
+                    <input type="text" class="form-control" placeholder="User name" ng-model="$ctrl.newUser">
                     <span class="input-group-btn">
-                      <button type="submit" class="btn btn-primary" ng-click="$ctrl.addThing()">Add New</button>
+                      <button type="submit" class="btn btn-primary" ng-click="$ctrl.addUser()">Enter</button>
                     </span>
                 </p>
             </form>

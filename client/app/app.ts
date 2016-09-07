@@ -18,10 +18,13 @@ import {routeConfig} from './app.config';
 import navbar from '../components/navbar/navbar.component';
 import footer from '../components/footer/footer.component';
 import main from './main/main.component';
+import dashboard from './dashboard/dashboard.component';
 import constants from './app.constants';
 import util from '../components/util/util.module';
 import socket from '../components/socket/socket.service';
+import common from './common/common.service';
 
+import state from './state/state.directive'
 
 import './app.scss';
 
@@ -37,9 +40,12 @@ angular.module('auctionApp', [
   navbar,
   footer,
   main,
+  dashboard,
   constants,
   socket,
-  util
+  common,
+  util,
+  state
 ])
   .config(routeConfig)
 ;

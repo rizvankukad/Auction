@@ -14,6 +14,9 @@ var db = {
 };
 
 // Insert models below
+db.Auction = db.sequelize.import('../api/auction/auction.model');
+db.Inventory = db.sequelize.import('../api/inventory/inventory.model');
+db.User = db.sequelize.import('../api/user/user.model');
 db.Thing = db.sequelize.import('../api/thing/thing.model');
 
 module.exports = db;
