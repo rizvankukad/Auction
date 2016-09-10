@@ -1,6 +1,6 @@
 # Auction
 
-This project is developed for crossover.com.
+Real time demo application
 
 ## Getting Started
 
@@ -29,10 +29,3 @@ Run `gulp build` for building and `gulp serve` for preview.
 
 Running `npm test` will run the unit tests with karma.
 
-## Not Covered Requirements
--Validation messages are not there.
--Missing requirement not implemented.
--User can bid more than coins he/she have.
-
-## feedback
-give angular-2 & progressive web development based assignment for latest technology.
