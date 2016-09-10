@@ -33,8 +33,7 @@ describe('User API:', function() {
       request(app)
         .post('/api/users')
         .send({
-          name: 'New User',
-          info: 'This is the brand new user!!!'
+          name: 'New User'
         })
         .expect(201)
         .expect('Content-Type', /json/)
@@ -49,7 +48,6 @@ describe('User API:', function() {
 
     it('should respond with the newly created user', function() {
       expect(newUser.name).to.equal('New User');
-      expect(newUser.info).to.equal('This is the brand new user!!!');
     });
   });
 
@@ -58,7 +56,7 @@ describe('User API:', function() {
 
     beforeEach(function(done) {
       request(app)
-        .get(`/api/users/${newUser._id}`)
+        .get(`/api/users/${newUser.name}`)
         .expect(200)
         .expect('Content-Type', /json/)
         .end((err, res) => {
@@ -75,57 +73,7 @@ describe('User API:', function() {
     });
 
     it('should respond with the requested user', function() {
-      expect(user.name).to.equal('New User');
-      expect(user.info).to.equal('This is the brand new user!!!');
-    });
-  });
-
-  describe('PUT /api/users/:id', function() {
-    var updatedUser;
-
-    beforeEach(function(done) {
-      request(app)
-        .put(`/api/users/${newUser._id}`)
-        .send({
-          name: 'Updated User',
-          info: 'This is the updated user!!!'
-        })
-        .expect(200)
-        .expect('Content-Type', /json/)
-        .end(function(err, res) {
-          if(err) {
-            return done(err);
-          }
-          updatedUser = res.body;
-          done();
-        });
-    });
-
-    afterEach(function() {
-      updatedUser = {};
-    });
-
-    it('should respond with the original user', function() {
-      expect(updatedUser.name).to.equal('New User');
-      expect(updatedUser.info).to.equal('This is the brand new user!!!');
-    });
-
-    it('should respond with the updated user on a subsequent GET', function(done) {
-      request(app)
-        .get(`/api/users/${newUser._id}`)
-        .expect(200)
-        .expect('Content-Type', /json/)
-        .end((err, res) => {
-          if(err) {
-            return done(err);
-          }
-          let user = res.body;
-
-          expect(user.name).to.equal('Updated User');
-          expect(user.info).to.equal('This is the updated user!!!');
-
-          done();
-        });
+      expect(user[0].name).to.equal('New User');
     });
   });
 
@@ -137,7 +85,6 @@ describe('User API:', function() {
         .patch(`/api/users/${newUser._id}`)
         .send([
           { op: 'replace', path: '/name', value: 'Patched User' },
-          { op: 'replace', path: '/info', value: 'This is the patched user!!!' }
         ])
         .expect(200)
         .expect('Content-Type', /json/)
@@ -156,7 +103,6 @@ describe('User API:', function() {
 
     it('should respond with the patched user', function() {
       expect(patchedUser.name).to.equal('Patched User');
-      expect(patchedUser.info).to.equal('This is the patched user!!!');
     });
   });
 

@@ -80,55 +80,6 @@ describe('Thing API:', function() {
     });
   });
 
-  describe('PUT /api/things/:id', function() {
-    var updatedThing;
-
-    beforeEach(function(done) {
-      request(app)
-        .put(`/api/things/${newThing._id}`)
-        .send({
-          name: 'Updated Thing',
-          info: 'This is the updated thing!!!'
-        })
-        .expect(200)
-        .expect('Content-Type', /json/)
-        .end(function(err, res) {
-          if(err) {
-            return done(err);
-          }
-          updatedThing = res.body;
-          done();
-        });
-    });
-
-    afterEach(function() {
-      updatedThing = {};
-    });
-
-    it('should respond with the original thing', function() {
-      expect(updatedThing.name).to.equal('New Thing');
-      expect(updatedThing.info).to.equal('This is the brand new thing!!!');
-    });
-
-    it('should respond with the updated thing on a subsequent GET', function(done) {
-      request(app)
-        .get(`/api/things/${newThing._id}`)
-        .expect(200)
-        .expect('Content-Type', /json/)
-        .end((err, res) => {
-          if(err) {
-            return done(err);
-          }
-          let thing = res.body;
-
-          expect(thing.name).to.equal('Updated Thing');
-          expect(thing.info).to.equal('This is the updated thing!!!');
-
-          done();
-        });
-    });
-  });
-
   describe('PATCH /api/things/:id', function() {
     var patchedThing;
 

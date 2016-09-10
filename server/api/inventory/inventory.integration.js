@@ -33,8 +33,8 @@ describe('Inventory API:', function() {
       request(app)
         .post('/api/inventory')
         .send({
-          name: 'New Inventory',
-          info: 'This is the brand new inventory!!!'
+          name: 'A',
+          item: 'bread'
         })
         .expect(201)
         .expect('Content-Type', /json/)
@@ -48,8 +48,8 @@ describe('Inventory API:', function() {
     });
 
     it('should respond with the newly created inventory', function() {
-      expect(newInventory.name).to.equal('New Inventory');
-      expect(newInventory.info).to.equal('This is the brand new inventory!!!');
+      expect(newInventory.name).to.equal('A');
+      expect(newInventory.item).to.equal('bread');
     });
   });
 
@@ -74,58 +74,8 @@ describe('Inventory API:', function() {
       inventory = {};
     });
 
-    it('should respond with the requested inventory', function() {
-      expect(inventory.name).to.equal('New Inventory');
-      expect(inventory.info).to.equal('This is the brand new inventory!!!');
-    });
-  });
-
-  describe('PUT /api/inventory/:id', function() {
-    var updatedInventory;
-
-    beforeEach(function(done) {
-      request(app)
-        .put(`/api/inventory/${newInventory._id}`)
-        .send({
-          name: 'Updated Inventory',
-          info: 'This is the updated inventory!!!'
-        })
-        .expect(200)
-        .expect('Content-Type', /json/)
-        .end(function(err, res) {
-          if(err) {
-            return done(err);
-          }
-          updatedInventory = res.body;
-          done();
-        });
-    });
-
-    afterEach(function() {
-      updatedInventory = {};
-    });
-
-    it('should respond with the original inventory', function() {
-      expect(updatedInventory.name).to.equal('New Inventory');
-      expect(updatedInventory.info).to.equal('This is the brand new inventory!!!');
-    });
-
-    it('should respond with the updated inventory on a subsequent GET', function(done) {
-      request(app)
-        .get(`/api/inventory/${newInventory._id}`)
-        .expect(200)
-        .expect('Content-Type', /json/)
-        .end((err, res) => {
-          if(err) {
-            return done(err);
-          }
-          let inventory = res.body;
-
-          expect(inventory.name).to.equal('Updated Inventory');
-          expect(inventory.info).to.equal('This is the updated inventory!!!');
-
-          done();
-        });
+    it('should respond with JSON array', function() {
+      expect(inventory).to.be.instanceOf(Array);
     });
   });
 
@@ -136,8 +86,8 @@ describe('Inventory API:', function() {
       request(app)
         .patch(`/api/inventory/${newInventory._id}`)
         .send([
-          { op: 'replace', path: '/name', value: 'Patched Inventory' },
-          { op: 'replace', path: '/info', value: 'This is the patched inventory!!!' }
+          { op: 'replace', path: '/name', value: 'C' },
+          { op: 'replace', path: '/item', value: 'diamond' }
         ])
         .expect(200)
         .expect('Content-Type', /json/)
@@ -155,8 +105,8 @@ describe('Inventory API:', function() {
     });
 
     it('should respond with the patched inventory', function() {
-      expect(patchedInventory.name).to.equal('Patched Inventory');
-      expect(patchedInventory.info).to.equal('This is the patched inventory!!!');
+      expect(patchedInventory.name).to.equal('C');
+      expect(patchedInventory.item).to.equal('diamond');
     });
   });
 

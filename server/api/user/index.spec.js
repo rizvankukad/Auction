@@ -42,10 +42,10 @@ describe('User API Router:', function() {
     });
   });
 
-  describe('GET /api/users/:id', function() {
+  describe('GET /api/users/:user', function() {
     it('should route to user.controller.show', function() {
       expect(routerStub.get
-        .withArgs('/:id', 'userCtrl.show')
+        .withArgs('/:user', 'userCtrl.show')
         ).to.have.been.calledOnce;
     });
   });

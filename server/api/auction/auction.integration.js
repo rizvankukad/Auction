@@ -33,8 +33,8 @@ describe('Auction API:', function() {
       request(app)
         .post('/api/auction')
         .send({
-          name: 'New Auction',
-          info: 'This is the brand new auction!!!'
+          seller : "A",
+          item: "bread"
         })
         .expect(201)
         .expect('Content-Type', /json/)
@@ -48,8 +48,8 @@ describe('Auction API:', function() {
     });
 
     it('should respond with the newly created auction', function() {
-      expect(newAuction.name).to.equal('New Auction');
-      expect(newAuction.info).to.equal('This is the brand new auction!!!');
+      expect(newAuction.seller).to.equal('A');
+      expect(newAuction.item).to.equal('bread');
     });
   });
 
@@ -75,88 +75,8 @@ describe('Auction API:', function() {
     });
 
     it('should respond with the requested auction', function() {
-      expect(auction.name).to.equal('New Auction');
-      expect(auction.info).to.equal('This is the brand new auction!!!');
-    });
-  });
-
-  describe('PUT /api/auction/:id', function() {
-    var updatedAuction;
-
-    beforeEach(function(done) {
-      request(app)
-        .put(`/api/auction/${newAuction._id}`)
-        .send({
-          name: 'Updated Auction',
-          info: 'This is the updated auction!!!'
-        })
-        .expect(200)
-        .expect('Content-Type', /json/)
-        .end(function(err, res) {
-          if(err) {
-            return done(err);
-          }
-          updatedAuction = res.body;
-          done();
-        });
-    });
-
-    afterEach(function() {
-      updatedAuction = {};
-    });
-
-    it('should respond with the original auction', function() {
-      expect(updatedAuction.name).to.equal('New Auction');
-      expect(updatedAuction.info).to.equal('This is the brand new auction!!!');
-    });
-
-    it('should respond with the updated auction on a subsequent GET', function(done) {
-      request(app)
-        .get(`/api/auction/${newAuction._id}`)
-        .expect(200)
-        .expect('Content-Type', /json/)
-        .end((err, res) => {
-          if(err) {
-            return done(err);
-          }
-          let auction = res.body;
-
-          expect(auction.name).to.equal('Updated Auction');
-          expect(auction.info).to.equal('This is the updated auction!!!');
-
-          done();
-        });
-    });
-  });
-
-  describe('PATCH /api/auction/:id', function() {
-    var patchedAuction;
-
-    beforeEach(function(done) {
-      request(app)
-        .patch(`/api/auction/${newAuction._id}`)
-        .send([
-          { op: 'replace', path: '/name', value: 'Patched Auction' },
-          { op: 'replace', path: '/info', value: 'This is the patched auction!!!' }
-        ])
-        .expect(200)
-        .expect('Content-Type', /json/)
-        .end(function(err, res) {
-          if(err) {
-            return done(err);
-          }
-          patchedAuction = res.body;
-          done();
-        });
-    });
-
-    afterEach(function() {
-      patchedAuction = {};
-    });
-
-    it('should respond with the patched auction', function() {
-      expect(patchedAuction.name).to.equal('Patched Auction');
-      expect(patchedAuction.info).to.equal('This is the patched auction!!!');
+      expect(auction.seller).to.equal('A');
+      expect(auction.item).to.equal('bread');
     });
   });
 

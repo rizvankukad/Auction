@@ -33,7 +33,7 @@ function patchUpdates(patches, res) {
     return entity.update({ winbid : patches.winbid, winner : patches.winner })
       .then(function(entity){
         bid = entity;
-        res.status(204).end();
+        res.status(200).json({});
       });
   };
 }
@@ -52,7 +52,7 @@ function removeEntity(res) {
 function handleEntityNotFound(res) {
   return function(entity) {
     if(!entity) {
-      console.log("NO ENTITY FOUND");
+      res.status(404).end();
       return null;
     }
     return entity;
@@ -99,7 +99,7 @@ function updateQueue( auction ){
 }
 function startTimer(entity){
   setTimeout(function(){
-    if(bid !== null && bid.winner){
+    if(bid && bid !== null && bid.winner){
       console.log(JSON.stringify(bid));
       Inventory.find({
         where : {
@@ -139,8 +139,8 @@ function startTimer(entity){
     entity.destroy();
     isAuctionRunning = false;
     startNextAuction();
-  },90000);
-  bid = null;
+  },100000);
+  //bid = null;
   isAuctionRunning = true;
 }
 

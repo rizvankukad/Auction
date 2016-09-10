@@ -42,10 +42,10 @@ describe('Inventory API Router:', function() {
     });
   });
 
-  describe('GET /api/inventory/:id', function() {
+  describe('GET /api/inventory/:name', function() {
     it('should route to inventory.controller.show', function() {
       expect(routerStub.get
-        .withArgs('/:id', 'inventoryCtrl.show')
+        .withArgs('/:name', 'inventoryCtrl.show')
         ).to.have.been.calledOnce;
     });
   });
